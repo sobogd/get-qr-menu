@@ -1,0 +1,17 @@
+{
+  "Landing": {
+    "title": "Get QR Menu",
+    "subtitle": "Create and share QR menus for your restaurant in seconds.",
+    "ctaPrimary": "Get started",
+    "ctaSecondary": "Learn more"
+  },
+  "Nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "copyright": "© {year} Get QR Menu. All rights reserved."
+  }
+}

@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "install:ui-i18n",
+			"type": "shell",
+			"command": "npm i -E class-variance-authority clsx lucide-react tailwind-merge next-intl react-intl",
+			"group": "build"
+		}
+	]
+}
