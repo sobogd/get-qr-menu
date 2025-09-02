@@ -1,9 +1,9 @@
 import type { LocalePrefix } from "next-intl/routing";
 
 const config = {
-  locales: ["en"] as const,
+  locales: ["en", "ru"] as const,
   defaultLocale: "en",
-  localePrefix: "as-needed" as LocalePrefix,
+  localePrefix: "always" as LocalePrefix,
 };
 
 export default config;

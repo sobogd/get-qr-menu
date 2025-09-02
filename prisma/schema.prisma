@@ -1,0 +1,515 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model categories {
+  id           Int        @id @default(autoincrement())
+  name         String     @db.VarChar(255)
+  description  String?
+  company_id   Int?
+  sort         Int?
+  translations Json?
+  status       String?    @default("active") @db.VarChar(100)
+  companies    companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "categories_companies_id_fk")
+}
+
+model companies {
+  id                 Int               @id(map: "companies_pk2") @unique(map: "companies_pk") @default(autoincrement())
+  title              String
+  login              String?
+  utc_diff           Int?
+  currency_symbol    String?           @db.VarChar(10)
+  timezone           String?           @db.VarChar(100)
+  email              String?           @db.VarChar(200)
+  lang               String?           @db.VarChar(20)
+  tin                String?           @db.VarChar(10)
+  balance            Decimal?          @db.Decimal
+  status             String?           @db.VarChar(20)
+  rate_id            Int?
+  created            DateTime?         @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  next_payment       DateTime?         @default(dbgenerated("timezone('utc'::text, (now() + '1 mon'::interval))")) @db.Timestamp(6)
+  langs              Json?             @db.Json
+  phone              String?           @db.VarChar(100)
+  instagram          String?           @db.VarChar(100)
+  google_maps_link   String?           @db.VarChar(100)
+  address            String?           @db.VarChar(100)
+  pm                 Json?
+  site               String?           @db.VarChar
+  show_public_header Boolean           @default(true)
+  google_map_coords  String?           @db.VarChar
+  otp                String?
+  categories         categories[]
+  rates              rates?            @relation(fields: [rate_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "companies_rates_id_fk")
+  payment_methods    payment_methods[]
+  tables             tables[]
+  users              users[]
+}
+
+model discounts {
+  id          Int     @id @default(autoincrement())
+  title       String? @db.VarChar(255)
+  description String? @db.VarChar(255)
+  item_ids    Json?
+  company_id  Int?
+  percent     Int?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model items {
+  id      Int     @id @default(autoincrement())
+  company Int
+  c       Int
+  s       Int
+  n       String  @db.VarChar(100)
+  p       Decimal @db.Decimal
+  d       String?
+  i       String?
+  a       Boolean
+  h       Boolean
+  v       Json?
+  o       Json?
+  f       String? @db.VarChar(150)
+  t       Json?
+  vt      Json?
+  ot      Json?
+  al      Json?   @db.Json
+}
+
+model m_all_events {
+  id          Int      @id @default(autoincrement())
+  customer_id String
+  created_at  DateTime @default(dbgenerated("timezone('utc'::text, now())"))
+  event       String
+  external_id String?
+  country     String?
+}
+
+model m_allergens {
+  id      Int           @id @default(autoincrement())
+  item_id Int
+  type    MAllergenType
+  m_items m_items       @relation(fields: [item_id], references: [id])
+}
+
+model m_categories {
+  id                       Int                        @id @default(autoincrement())
+  sort                     Decimal
+  status                   MCategoryStatus            @default(ACTIVE)
+  company_id               Int
+  m_companies              m_companies                @relation(fields: [company_id], references: [id])
+  m_categories_titles      m_categories_titles[]
+  m_items_categories       m_items_categories[]
+  m_restaurants_categories m_restaurants_categories[]
+}
+
+model m_categories_titles {
+  id           Int          @id @default(autoincrement())
+  lang         String
+  title        String
+  category_id  Int
+  m_categories m_categories @relation(fields: [category_id], references: [id])
+}
+
+model m_companies {
+  id                Int                 @id @default(autoincrement())
+  status            MCompanyStatus      @default(ACTIVE)
+  customer_id       String?
+  m_categories      m_categories[]
+  m_companies_langs m_companies_langs[]
+  m_items           m_items[]
+  m_messages        m_messages[]
+  m_restaurants     m_restaurants[]
+  m_subscriptions   m_subscriptions[]
+  m_users           m_users[]
+}
+
+model m_companies_langs {
+  id          Int              @id @default(autoincrement())
+  lang        String
+  type        MCompanyLangType @default(GENERAL)
+  company_id  Int
+  m_companies m_companies      @relation(fields: [company_id], references: [id])
+}
+
+model m_contacts {
+  id            Int           @id @default(autoincrement())
+  type          MContactType
+  value         String
+  restaurant_id Int
+  m_restaurants m_restaurants @relation(fields: [restaurant_id], references: [id])
+}
+
+model m_events {
+  id            Int           @id @default(autoincrement())
+  customer_id   String
+  created_at    DateTime      @default(now())
+  type          MEventType
+  data          Json?
+  restaurant_id Int
+  m_restaurants m_restaurants @relation(fields: [restaurant_id], references: [id])
+}
+
+model m_items {
+  id                   Int                    @id @default(autoincrement())
+  price                Decimal
+  image                String
+  sort                 Decimal
+  status               MItemStatus            @default(ACTIVE)
+  company_id           Int
+  m_allergens          m_allergens[]
+  m_companies          m_companies            @relation(fields: [company_id], references: [id])
+  m_items_categories   m_items_categories[]
+  m_items_descriptions m_items_descriptions[]
+  m_items_restaurants  m_items_restaurants[]
+  m_items_titles       m_items_titles[]
+  m_options            m_options[]
+  m_tags               m_tags[]
+}
+
+model m_items_categories {
+  id           Int          @id @default(autoincrement())
+  category_id  Int
+  item_id      Int
+  m_categories m_categories @relation(fields: [category_id], references: [id])
+  m_items      m_items      @relation(fields: [item_id], references: [id])
+}
+
+model m_items_descriptions {
+  id          Int     @id @default(autoincrement())
+  lang        String
+  description String
+  item_id     Int
+  m_items     m_items @relation(fields: [item_id], references: [id])
+}
+
+model m_items_restaurants {
+  id            Int           @id @default(autoincrement())
+  item_id       Int
+  restaurant_id Int
+  m_items       m_items       @relation(fields: [item_id], references: [id])
+  m_restaurants m_restaurants @relation(fields: [restaurant_id], references: [id])
+}
+
+model m_items_titles {
+  id      Int     @id @default(autoincrement())
+  lang    String
+  title   String
+  item_id Int
+  m_items m_items @relation(fields: [item_id], references: [id])
+}
+
+model m_messages {
+  id          Int         @id @default(autoincrement())
+  created_at  DateTime    @default(now())
+  is_customer Boolean
+  message     String
+  company_id  Int
+  m_companies m_companies @relation(fields: [company_id], references: [id])
+}
+
+model m_options {
+  id               Int                @id @default(autoincrement())
+  price            Decimal
+  required         Boolean
+  status           MOptionStatus      @default(ACTIVE)
+  item_id          Int
+  m_items          m_items            @relation(fields: [item_id], references: [id])
+  m_options_titles m_options_titles[]
+}
+
+model m_options_titles {
+  id        Int       @id @default(autoincrement())
+  title     String
+  lang      String
+  option_id Int
+  m_options m_options @relation(fields: [option_id], references: [id], onDelete: Cascade)
+}
+
+model m_prices {
+  id              Int               @id @default(autoincrement())
+  price_id        String
+  product_id      String
+  amount          Decimal
+  type            MSubscriptionType @default(FREE)
+  m_subscriptions m_subscriptions[]
+}
+
+model m_restaurants {
+  id                       Int                        @id @default(autoincrement())
+  company_id               Int
+  currency                 String?
+  website                  String?
+  name                     String?
+  status                   MRestaurantStatus          @default(ACTIVE)
+  background               String?
+  theme                    String?
+  m_contacts               m_contacts[]
+  m_events                 m_events[]
+  m_items_restaurants      m_items_restaurants[]
+  m_companies              m_companies                @relation(fields: [company_id], references: [id])
+  m_restaurants_categories m_restaurants_categories[]
+  m_restaurants_subtitles  m_restaurants_subtitles[]
+  m_restaurants_titles     m_restaurants_titles[]
+}
+
+model m_restaurants_categories {
+  id            Int           @id @default(autoincrement())
+  category_id   Int
+  restaurant_id Int
+  m_categories  m_categories  @relation(fields: [category_id], references: [id])
+  m_restaurants m_restaurants @relation(fields: [restaurant_id], references: [id])
+}
+
+model m_restaurants_subtitles {
+  id            Int           @id @default(autoincrement())
+  lang          String
+  title         String
+  restautant_id Int
+  m_restaurants m_restaurants @relation(fields: [restautant_id], references: [id])
+}
+
+model m_restaurants_titles {
+  id            Int           @id @default(autoincrement())
+  lang          String
+  title         String
+  restautant_id Int
+  m_restaurants m_restaurants @relation(fields: [restautant_id], references: [id])
+}
+
+model m_subscriptions {
+  id          Int                 @id @default(autoincrement())
+  company_id  Int
+  type        MSubscriptionType   @default(FREE)
+  price_id    Int
+  status      MSubscriptionStatus @default(PENDING)
+  m_companies m_companies         @relation(fields: [company_id], references: [id])
+  m_prices    m_prices            @relation(fields: [price_id], references: [id])
+}
+
+model m_tags {
+  id      Int     @id @default(autoincrement())
+  item_id Int
+  tag     String
+  m_items m_items @relation(fields: [item_id], references: [id])
+}
+
+model m_translations {
+  id    Int    @id @default(autoincrement())
+  lang  String
+  title String
+}
+
+model m_users {
+  id          Int         @id @default(autoincrement())
+  email       String
+  role        MUserRole   @default(ADMIN)
+  otp         String?
+  company_id  Int
+  m_companies m_companies @relation(fields: [company_id], references: [id])
+}
+
+model migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
+}
+
+model o {
+  t   Int?
+  c   String?
+  p   Json?
+  n   Int?
+  cid Int?
+  crt BigInt?
+  d   Decimal? @db.Decimal
+  m   String?  @db.VarChar(200)
+  f   BigInt?
+  id  Int      @id @default(autoincrement())
+}
+
+model payment_methods {
+  id          Int       @id(map: "payment_methods_pk") @default(autoincrement())
+  title       String    @db.VarChar(100)
+  description String    @db.VarChar(300)
+  company_id  Int
+  companies   companies @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "payment_methods_companies_id_fk")
+}
+
+model rates {
+  id        Int         @id(map: "rates_pk") @default(autoincrement())
+  name      String?     @db.VarChar(100)
+  per_month Int?
+  companies companies[]
+}
+
+model tables {
+  id         Int        @id @default(autoincrement())
+  number     Int?
+  name       String?    @db.VarChar(255)
+  x          Decimal?   @db.Decimal
+  y          Decimal?   @db.Decimal
+  company_id Int?
+  status     String?    @db.VarChar(30)
+  for_order  Boolean?
+  w          Decimal?   @db.Decimal
+  type       String?    @db.VarChar(30)
+  h          Decimal?   @db.Decimal
+  companies  companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tables_companies_id_fk")
+}
+
+model users {
+  name       String
+  login      String
+  password   String
+  type       String
+  id         Int       @id @default(autoincrement())
+  company_id Int
+  status     String?   @db.VarChar(30)
+  last_login DateTime? @db.Timestamp(6)
+  lang       String?   @db.VarChar
+  companies  companies @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_companies_id_fk")
+}
+
+model gqm_restaurant {
+  id            String   @id @default(uuid()) @db.Uuid
+  slug          String?  @unique @db.VarChar(160)
+  name          String   @db.VarChar(200)
+  defaultLocale String   @default("en") @db.VarChar(10)
+  description   String?
+  createdAt     DateTime @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime @updatedAt @db.Timestamp(6)
+  categories    gqm_category[]
+  items         gqm_item[]
+}
+
+model gqm_category {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String      @db.VarChar(160)
+  slug         String?     @db.VarChar(160)
+  sortIndex    Int         @default(0)
+  restaurant   gqm_restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId String      @db.Uuid
+  createdAt    DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime    @updatedAt @db.Timestamp(6)
+  items        gqm_item[]
+}
+
+model gqm_item {
+  id           String        @id @default(uuid()) @db.Uuid
+  name         String        @db.VarChar(200)
+  description  String?
+  priceCents   Int
+  currency     String        @default("USD") @db.VarChar(8)
+  available    Boolean       @default(true)
+  isDemo       Boolean       @default(false)
+  sortIndex    Int           @default(0)
+  restaurant   gqm_restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId String        @db.Uuid
+  category     gqm_category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  categoryId   String?       @db.Uuid
+  createdAt    DateTime      @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime      @updatedAt @db.Timestamp(6)
+}
+
+enum MAllergenType {
+  GLUTEN
+  MILK
+  EGGS
+  NUTS
+  PEANUTS
+  SOYBEANS
+  FISH
+  CRUSTACEANS
+  MOLLUSCS
+  CELERY
+  LUPIN
+  SESAME
+  MUSTARD
+  SULPHITES
+}
+
+enum MCategoryStatus {
+  ACTIVE
+  ARCHIVED
+  DISABLED
+}
+
+enum MCompanyLangType {
+  GENERAL
+  ADDITIONAL
+}
+
+enum MCompanyStatus {
+  ACTIVE
+  ARCHIVE
+}
+
+enum MContactType {
+  PHONE
+  ADDRESS
+  FACEBOOK
+  WEBSITE
+  INSTAGRAM
+  WHATSAPP
+  TELEGRAM
+  GOOGLE_MAPS_COORDS
+  GOOGLE_MAPS_LINK
+  OTHER
+}
+
+enum MEventType {
+  QR_SCAN_MAIN
+  QR_SCAN_TAG
+  PAGE_MAIN
+  PAGE_CONTACTS
+  PAGE_LANGUAGES
+  PAGE_LIKES
+  PAGE_MENU
+  PAGE_DETAILS
+  PAGE_FILTERS
+  LANGUAGE_CHANGE
+  LIKE_DISH_LIST
+  LIKE_DISH_DETAILS
+  APPLY_FILTERS
+}
+
+enum MItemStatus {
+  ACTIVE
+  ARCHIVED
+  DISABLED
+}
+
+enum MOptionStatus {
+  ACTIVE
+  ARCHIVED
+  DISABLED
+}
+
+enum MRestaurantStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum MSubscriptionStatus {
+  DISABLED
+  PENDING
+  ACTIVE
+}
+
+enum MSubscriptionType {
+  FREE
+  PRO
+  ULTRA
+}
+
+enum MUserRole {
+  ADMIN
+  USER
+}

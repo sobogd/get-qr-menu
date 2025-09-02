@@ -1,17 +1,356 @@
 {
   "Landing": {
-    "title": "Get QR Menu",
-    "subtitle": "Create and share QR menus for your restaurant in seconds.",
-    "ctaPrimary": "Get started",
-    "ctaSecondary": "Learn more"
+    "title": "QR menu + website in 2 minutes —\nAI-powered, instant, no reprints.",
+    "subtitle": "Get not just a QR menu, but a complete website for your restaurant — with AI translations, instant updates, and insights on what guests love most.",
+    "ctaPrimary": "Create your free menu",
+    "ctaSecondary": "View demo menu",
+    "trust": "No credit card required",
+    "trustHtml": "<span class=\"text-primary font-semibold\">No credit card</span> required",
+    "cancelAnytime": "Cancel anytime",
+    "trustedWorldwide": "Trusted by restaurants worldwide",
+    "pills": {
+      "languages": "AI translations — 30+ languages",
+      "updates": "Instant updates — no reprints",
+      "analytics": "Analytics & insights",
+      "flexible": "Flexible QR — by category or hashtag"
+    },
+    "heroBadge": "New",
+    "heroBadgeText": "Launch your QR menu today"
   },
   "Nav": {
     "home": "Home",
     "features": "Features",
     "pricing": "Pricing",
-    "contact": "Contact"
+    "demo": "Demo",
+    "faq": "FAQ / Support",
+    "contact": "Contact",
+    "cta": "Get started"
+  },
+  "Sections": {
+    "features": {
+      "title": "Everything you need to launch QR menus",
+      "items": {
+        "builder": {
+          "title": "Menu builder",
+          "desc": "Create and edit menus with categories, items, prices and images.",
+          "line1": "Create a menu in minutes — no training required.",
+          "line2": "Add categories, dishes, prices, and photos in a simple drag-and-drop editor.",
+          "punch": "Save hours of staff work and launch a professional digital menu without hiring a designer."
+        },
+        "qr": {
+          "title": "QR codes",
+          "desc": "Generate branded QR codes you can print or share anywhere.",
+          "line1": "Branded QR codes your guests will love to scan.",
+          "line2": "Print one QR for the whole menu, or create unique codes for specials and categories.",
+          "punch": "Flexible and <span class=\"text-primary font-semibold\">always up to date</span> — no more expensive reprints."
+        },
+        "multiLang": {
+          "title": "Multi-language with AI",
+          "desc": "Add translations to serve guests in their language.",
+          "line1": "Serve international guests effortlessly.",
+          "line2": "Translate your menu into 30+ languages with one click, and fine-tune manually if needed.",
+          "punch": "Impress tourists and expats, grow sales, and remove the language barrier instantly."
+        },
+        "analytics": {
+          "title": "Analytics & insights",
+          "desc": "Track scans, see top items, and performance over time.",
+          "line1": "See what guests order most — and why.",
+          "line2": "Track scans, top dishes, and menu performance with clear reports.",
+          "punch": "Make smarter decisions on pricing and promotions based on real data."
+        },
+        "updates": {
+          "title": "Instant updates",
+          "desc": "Publish changes instantly without reprinting anything.",
+          "line1": "Change once — update everywhere.",
+          "line2": "Edit items, prices, or availability in seconds, visible instantly on all devices.",
+          "punch": "Cut printing costs forever. Keep everything current and save costs daily."
+        },
+        "themes": {
+          "title": "Themes & customization",
+          "desc": "Match your brand with modern, accessible templates.",
+          "line1": "A beautiful menu that matches your brand.",
+          "line2": "Choose from modern templates and adjust colors, fonts, and styles to fit your restaurant.",
+          "punch": "Delight your guests with a professional QR menu — <span class=\"text-primary font-semibold\">without hiring a designer</span>."
+        },
+        "safety": {
+          "title": "Safe for guests",
+          "desc": "Clear allergen info and variants.",
+          "line1": "Build trust with transparent menus.",
+          "line2": "Show allergens, ingredients, and variants clearly.",
+          "punch": "Guests feel safe and informed — leading to more confidence and repeat visits."
+        }
+      }
+    },
+    "why": {
+      "title": "",
+      "subtitle": "More reasons to choose Get QR Menu",
+      "items": [
+        {
+          "title": "Manage anywhere",
+          "desc": "Update your menu instantly from your phone — save time and reduce errors."
+        },
+        {
+          "title": "Custom themes",
+          "desc": "Match your brand with flexible templates — impress guests and keep a modern look."
+        },
+        {
+          "title": "Video backgrounds",
+          "desc": "Add video to your homepage — stand out online and attract more visitors."
+        }
+      ]
+    },
+    "benefits": {
+      "title": "Why restaurants switch to QR menus",
+      "items": [
+        {
+          "title": "Cut printing costs forever",
+          "desc": "No more paying for reprints. Update prices, items, or specials instantly — save hundreds per year."
+        },
+        {
+          "title": "Serve guests faster",
+          "desc": "Guests scan and browse instantly. No waiting for paper menus — more orders, quicker turnover."
+        },
+        {
+          "title": "Reduce costly errors",
+          "desc": "Always up-to-date menus prevent price mismatches, out-of-stock items, and staff confusion."
+        }
+      ]
+    },
+    "useCases": {
+      "title": "Made for every type of hospitality business",
+      "items": [
+        {
+          "title": "Cafes & bakeries",
+          "desc": "Keep daily specials, seasonal offers, and rotating items always fresh and up to date. Guests see what’s available now — no more outdated menus."
+        },
+        {
+          "title": "Bars & pubs",
+          "desc": "Update happy hour deals and cocktail lists in seconds. Boost sales by promoting seasonal drinks and specials instantly."
+        },
+        {
+          "title": "Restaurants",
+          "desc": "Offer multilingual menus for tourists and locals. Impress guests with professional, mobile-friendly design and instant updates."
+        },
+        {
+          "title": "Hotels",
+          "desc": "Digitize room service and restaurant menus with QR codes. Reduce printing costs and make it easier for guests to order anytime."
+        }
+      ]
+    },
+    "security": {
+      "title": "Fast and secure",
+      "items": [
+        {
+          "title": "Hosted on modern infrastructure",
+          "desc": "Global CDN and best practices for speed and reliability."
+        },
+        {
+          "title": "Privacy-first",
+          "desc": "We collect the minimum data needed to improve your experience."
+        },
+        {
+          "title": "Reliable and scalable",
+          "desc": "High availability architecture ensures your menus are always online."
+        }
+      ]
+    },
+    "how": {
+      "title": "How it works in 3 steps",
+      "desc": "Launch your QR menu in 2 minutes — no training required.",
+      "steps": {
+        "1": {
+          "title": "Create your menu",
+          "desc": "Add categories, items, prices, and photos in a simple editor."
+        },
+        "2": {
+          "title": "Print the QR",
+          "desc": "Get your branded QR instantly, download and place it on tables."
+        },
+        "3": {
+          "title": "Update anytime",
+          "desc": "Edit items and prices anytime — changes go live instantly."
+        }
+      }
+    },
+    "pricing": {
+      "title": "Start free. Upgrade when you grow.",
+      "desc": "All features included — only limits change. No credit card required.",
+      "free": {
+        "name": "Free",
+        "tagline": "Perfect to try it out",
+        "price": "€0",
+        "period": "/mo",
+        "cta": "Start free",
+        "features": [
+          "1 menu",
+          "Up to 30 items",
+          "AI translation for 1 language",
+          "\"Powered by Get QR Menu\" footer"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "For growing restaurants",
+        "price": "€9",
+        "period": "/mo",
+        "cta": "Choose Pro",
+        "features": [
+          "Up to 5 menus",
+          "Up to 300 items",
+          "AI translations into 30+ languages",
+          "Translations auto-update when you edit items",
+          "Remove branding"
+        ]
+      },
+      "ultra": {
+        "name": "Ultra",
+        "tagline": "For professional & multi-location use",
+        "price": "€19",
+        "period": "/mo",
+        "cta": "Choose Ultra",
+        "features": [
+          "Unlimited menus and items",
+          "AI translations into 30+ languages",
+          "Advanced AI localization for different regions",
+          "White-label (own domain, no branding)",
+          "Advanced analytics"
+        ]
+      },
+      "highlight": "Recommended"
+    },
+    "faq": {
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "Do I need special printers?",
+          "a": "No. Any standard printer works for your QR posters or table tents."
+        },
+        {
+          "q": "Can I change prices daily?",
+          "a": "Yes. Updates are instant and your QR menu always shows the latest version."
+        },
+        {
+          "q": "Is there a free plan?",
+          "a": "Yes. Start for free and upgrade anytime."
+        },
+        {
+          "q": "Can I cancel anytime?",
+          "a": "Yes. No contracts or commitments."
+        },
+        {
+          "q": "Are there hidden fees?",
+          "a": "No. There are no hidden fees or extra charges."
+        },
+        {
+          "q": "How accurate are AI translations?",
+          "a": "They provide a high‑quality baseline. You can review and fine‑tune wording for your brand."
+        },
+        {
+          "q": "Can I edit AI translations manually?",
+          "a": "Yes. You can edit any text at any time."
+        },
+        {
+          "q": "Do I need to reprint QR codes when I update my menu?",
+          "a": "No. The QR stays the same — changes go live instantly."
+        },
+        {
+          "q": "Can I create separate QR codes for categories or daily specials?",
+          "a": "Yes. You can generate unique QR codes per category or special."
+        },
+        {
+          "q": "Do I need technical skills to create my menu?",
+          "a": "No. The drag‑and‑drop editor is simple — it takes about 2 minutes."
+        },
+        {
+          "q": "Can I upload images of dishes?",
+          "a": "Yes. Add photos and descriptions to your items."
+        },
+        {
+          "q": "Do guests need to install an app?",
+          "a": "No. It works in the browser — scan and view instantly."
+        },
+        {
+          "q": "Does it work on all devices?",
+          "a": "Yes. Optimized for phones, tablets and desktops."
+        },
+        {
+          "q": "Is my data safe?",
+          "a": "Yes. Hosted on AWS with HTTPS, backups, and security best practices."
+        },
+        {
+          "q": "Do you share my data?",
+          "a": "No. Privacy‑first: we don’t sell or share your data."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Launch your QR menu today",
+      "desc": "Create your first menu in minutes and start taking orders.",
+      "button": "Get started"
+    }
   },
   "Footer": {
+    "nav": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "demo": "Demo",
+      "contact": "Contact / Support"
+    },
+    "trust": {
+      "made": "Made for restaurants and cafes of any size",
+      "badge": "Hosted on AWS · Secure & reliable"
+    },
+    "legal": {
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy"
+    },
+    "contact": {
+      "title": "Contact",
+      "email": "support@get-qr-menu.com"
+    },
+    "availability": "Available worldwide",
+    "social": {
+      "title": "Follow us",
+      "linkedin": "LinkedIn"
+    },
+    "cta": {
+      "button": "Get started free",
+      "sub": "No credit card · Cancel anytime"
+    },
     "copyright": "© {year} Get QR Menu. All rights reserved."
+  },
+  "UI": {
+    "languageSelector": {
+      "search": "Search language",
+      "noResults": "No results"
+    }
+  },
+  "Dashboard": {
+    "header": {
+      "liveNote": "Your menu is live",
+      "publicLink": "Public link",
+      "shareMenu": "Share your menu with guests",
+      "getQr": "Get QR",
+      "copyLink": "Copy Link",
+      "searchPlaceholder": "Search items…",
+      "settings": "Restaurant settings",
+      "addCategory": "+ Category",
+      "addItem": "+ Item",
+      "orderChanged": "Order changed",
+      "saveOrCancel": "Save or cancel your sorting changes.",
+      "saveOrder": "Save order",
+      "saveFailed": "Failed to save order",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "manage": "Manage",
+      "manageCategory": "Manage Category",
+      "manageItem": "Manage Item",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "available": "Available",
+      "hidden": "Hidden",
+      "empty": "Empty",
+      "demo": "Demo"
+    }
   }
 }
