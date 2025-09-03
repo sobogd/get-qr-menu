@@ -88,8 +88,8 @@ export function countryToCurrency(
 export function regionFromAcceptLanguage(header?: string): string | undefined {
   if (!header) return undefined;
   const first = header.split(",")[0]?.trim();
-  const parts = first.split("-");
-  if (parts.length >= 2) return parts[1].toUpperCase();
+  const parts = first?.split("-");
+  if (parts && parts?.length >= 2) return parts[1]?.toUpperCase();
   return undefined;
 }
 

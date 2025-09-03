@@ -1,29 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { useRef } from "react";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { DashboardHeader } from "./DashboardHeader";
-import ItemEditor from "./ItemEditor";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import {
-  ChevronsUp,
-  ChevronsDown,
-  LayoutGrid,
-  Pencil,
-  Trash2,
-  Copy,
-} from "lucide-react";
+import { ChevronsDown, ChevronsUp, Copy, Pencil, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { DashboardHeader } from "./DashboardHeader";
+import ItemEditor from "./ItemEditor";
 
 type CategoryDTO = { id: string; name: string; sortIndex: number };
 type ItemDTO = {
   id: string;
-  name: string;
+  name: string | null;
   priceCents: number;
   currency: string;
   available: boolean;
@@ -46,12 +37,10 @@ export function RestaurantDashboard({
   items: initialItems,
 }: RestaurantDashboardProps) {
   const t = useTranslations("Dashboard");
-  // reordering is always enabled; no explicit mode
   const [query, setQuery] = useState("");
   const [categories, setCategories] = useState(initialCategories);
   const [items, setItems] = useState(initialItems);
   const [dirty, setDirty] = useState(false);
-  // sonner toast is used for notifications
   const persistingRef = useRef(false);
 
   const [editorOpen, setEditorOpen] = useState(false);
@@ -73,6 +62,7 @@ export function RestaurantDashboard({
   function reorderArray<T>(arr: T[], from: number, to: number): T[] {
     const a = [...arr];
     const [moved] = a.splice(from, 1);
+    if (moved === undefined) return a;
     a.splice(to, 0, moved);
     return a;
   }
@@ -87,21 +77,14 @@ export function RestaurantDashboard({
         : Math.min(prevCats.length - 1, idx + 1);
     if (to === idx) return;
     const next = reorderArray(prevCats, idx, to);
-    // (no undo) optimistic update only
-    // optimistic update
     setCategories(next);
-    // persist immediately, rollback on failure
-    // avoid starting another persist if one is already running
     if (!persistingRef.current) {
       void (async () => {
         persistingRef.current = true;
         try {
-          // debug log for duplicate-call investigation
-          // console.debug?.("persistCategoryOrder:start", id, dir);
           await persistCategoryOrder(next, prevCats);
         } finally {
           persistingRef.current = false;
-          // console.debug?.("persistCategoryOrder:end", id, dir);
         }
       })();
     }
@@ -122,21 +105,15 @@ export function RestaurantDashboard({
         }
       );
       if (!res.ok) throw new Error("categories reorder failed");
-      // NOTE: items reorder is persisted separately (e.g. via explicit Save).
-      // We avoid sending the items/reorder request here to keep a single network
-      // request per category move and prevent duplicate category-level requests.
       setDirty(false);
       toast.success(t("header.saved"));
       return true;
     } catch {
-      // rollback optimistic update
       setCategories(prevCats);
       toast.error(t("header.saveFailed"));
       return false;
     }
   }
-
-  // moveItem removed: item-level move controls are not used anymore
 
   async function saveOrder(newCats?: CategoryDTO[], newItems?: ItemDTO[]) {
     const catsToSend = newCats ?? categories;
@@ -145,13 +122,12 @@ export function RestaurantDashboard({
     const groupsMap: Record<string, string[]> = {};
     catsToSend.forEach((c) => (groupsMap[c.id] = []));
     itemsToSend.forEach(
-      (i) => i.categoryId && groupsMap[i.categoryId].push(i.id)
+      (i) => i.categoryId && groupsMap[i.categoryId]?.push(i.id)
     );
     const groups = Object.entries(groupsMap).map(([categoryId, items]) => ({
       categoryId,
       items,
     }));
-    // persist categories first
     const catRes = await fetch(
       `/api/restaurants/${restaurantId}/categories/reorder`,
       {
@@ -161,7 +137,6 @@ export function RestaurantDashboard({
       }
     );
     if (!catRes.ok) return;
-    // try to persist items, but don't block success if it fails
     try {
       await fetch(`/api/restaurants/${restaurantId}/items/reorder`, {
         method: "PATCH",
@@ -181,13 +156,12 @@ export function RestaurantDashboard({
     setDirty(false);
   }
 
-  // filter categories with matches
   const displayedCategories = categories
     .map((cat) => {
       const filteredItems = items.filter(
         (i) =>
           i.categoryId === cat.id &&
-          i.name.toLowerCase().includes(query.toLowerCase())
+          i.name?.toLowerCase().includes(query.toLowerCase())
       );
       return { ...cat, filteredItems };
     })
@@ -344,8 +318,6 @@ export function RestaurantDashboard({
         restaurantId={restaurantId}
         defaultCategoryId={defaultCategoryId}
       />
-
-      {/* sonner Toaster is mounted globally */}
     </div>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { usePathname, useParams, Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link, useParams, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Language = {
   code: string;
@@ -93,9 +93,9 @@ export function LanguageSelector({ className }: { className?: string }) {
         onClick={() => setOpen((v) => !v)}
         className="min-w-[90px] justify-between"
       >
-        <span className="truncate">{displayName(current)}</span>
+        <span className="truncate">{current && displayName(current)}</span>
         <span className="ml-2 text-xs text-muted-foreground">
-          {current.code.toUpperCase()}
+          {current?.code.toUpperCase()}
         </span>
       </Button>
 

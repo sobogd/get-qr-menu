@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
-// ...existing code...
 import { COOKIE_SLUG } from "@/constants";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
@@ -25,7 +22,6 @@ export default async function GetStartedPage({
   const cookieStore = await cookies();
   const slug = cookieStore.get(COOKIE_SLUG)?.value;
 
-  // If we already have a demo restaurant slug in cookies — redirect to it
   if (slug) {
     redirect(`/${(locale || "en").toLowerCase()}/${slug}`);
   }

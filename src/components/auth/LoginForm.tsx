@@ -152,7 +152,7 @@ export default function LoginForm({
       } else if (list.length === 1) {
         // Single restaurant: redirect immediately (prefer slug, fallback to id)
         const r = list[0];
-        router.push(`/${r.defaultLocale ?? locale}/${r.slug ?? r.id}`);
+        router.push(`/${r?.defaultLocale ?? locale}/${r?.slug ?? r?.id}`);
       } else {
         // Multiple restaurants: show selection UI
         setRestaurants(

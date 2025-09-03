@@ -7,7 +7,7 @@
     "dev": "PORT=9999 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint . --ignore-pattern 'src/generated/**' --ignore-pattern 'prisma/**'  --ignore-pattern 'next-env.d.ts' --ignore-pattern '.next/**' --ignore-pattern 'dist/**' --ignore-pattern 'out/**' --ignore-pattern 'build/**' --ignore-pattern 'node_modules/**'"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",
