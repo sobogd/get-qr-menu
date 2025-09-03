@@ -1,5 +1,8 @@
 "use client";
-import Link from "next/link";
+import { Brand } from "@/components/brand";
+import { CurrencySelector } from "@/components/currency-selector";
+import { LanguageSelector } from "@/components/language-selector";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -9,29 +12,24 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetFooter,
 } from "@/components/ui/sheet";
 import {
-  Menu,
   LayoutGrid,
-  Tag,
-  PlayCircle,
+  Menu,
   MessageCircleQuestion,
   Phone,
+  PlayCircle,
+  Tag,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Brand } from "@/components/brand";
-import { ThemeToggle } from "@/components/theme-toggle";
-// import { usePathname } from "@/i18n/routing";
-import { LanguageSelector } from "@/components/language-selector";
-import { CurrencySelector } from "@/components/currency-selector";
+import Link from "next/link";
 
 export function SiteHeader({ locale }: { locale: string }) {
   const t = useTranslations("Nav");
-  // const pathname = usePathname();
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur">
       <div className="container mx-auto max-w-6xl flex h-14 items-center justify-between px-4">
@@ -40,8 +38,6 @@ export function SiteHeader({ locale }: { locale: string }) {
             <Brand size="md" />
           </Link>
         </div>
-
-        {/* Desktop nav (>=1024px) */}
         <div className="hidden lg:flex items-center gap-4">
           <ThemeToggle />
           <NavigationMenu className="text-sm">
