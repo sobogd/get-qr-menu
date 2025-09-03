@@ -1,11 +1,11 @@
 "use client";
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useCurrency } from "@/components/currency-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useLocale } from "next-intl";
-import { useRouter } from "@/i18n/routing";
-import { useCurrency } from "@/components/currency-provider";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Currency = { code: string; name: string };
 
@@ -201,7 +201,7 @@ export function CurrencySelector({ className }: { className?: string }) {
             ) : (
               filtered.map((c) => (
                 <li key={c.code}>
-                  <button
+                  <Button
                     type="button"
                     onClick={() => choose(c.code)}
                     className={cn(
@@ -210,12 +210,13 @@ export function CurrencySelector({ className }: { className?: string }) {
                     )}
                     role="option"
                     aria-selected={c.code === currency}
+                    variant="ghost"
                   >
                     <span className="font-medium truncate pr-3">{c.name}</span>
                     <span className="text-xs text-muted-foreground whitespace-nowrap">
                       {currencySymbol(c.code)}
                     </span>
-                  </button>
+                  </Button>
                 </li>
               ))
             )}

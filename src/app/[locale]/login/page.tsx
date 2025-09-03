@@ -1,12 +1,10 @@
-import { cookies } from "next/headers";
-import { COOKIE_SLUG } from "@/constants";
+import LoginForm from "@/components/auth/LoginForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import en from "@/i18n/messages/en.json";
 import ru from "@/i18n/messages/ru.json";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import LoginForm from "@/components/auth/LoginForm";
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 export default async function LoginPage({ params }: Props) {
@@ -17,9 +15,6 @@ export default async function LoginPage({ params }: Props) {
   const messages = locale === "ru" ? ru : en;
 
   // preserve cookie reading if needed for prefill or analytics
-  const cookieStore = await cookies();
-  const slug = cookieStore.get(COOKIE_SLUG)?.value;
-
   return (
     <main className="min-h-dvh flex items-center justify-center p-4">
       <Card className="w-full max-w-md">

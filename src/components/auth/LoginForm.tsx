@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+// ...existing code...
+import { sendVerificationCode } from "@/actions/send-verification-code";
+import { verifyCode } from "@/actions/verify-code";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export default function LoginForm({
@@ -88,14 +90,9 @@ export default function LoginForm({
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/send-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: normalized }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data?.ok) {
+      // Call server action (will run on the server).
+      const data = await sendVerificationCode(normalized as string);
+      if (!data?.ok) {
         setError(data?.error || "Failed to send code");
         setLoading(false);
         return;
@@ -125,14 +122,8 @@ export default function LoginForm({
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/verify-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: sentTo, token: code.trim() }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data?.ok) {
+      const data = await verifyCode(sentTo as string, code.trim());
+      if (!data?.ok) {
         setError(data?.error || "Invalid code");
         setLoading(false);
         return;
@@ -160,9 +151,9 @@ export default function LoginForm({
         // No restaurants linked: go to locale root
         router.push(`/${locale}`);
       } else if (list.length === 1) {
-        // Single restaurant: redirect immediately
+        // Single restaurant: redirect immediately (prefer slug, fallback to id)
         const r = list[0];
-        router.push(`/${r.defaultLocale ?? locale}/${r.id}`);
+        router.push(`/${r.defaultLocale ?? locale}/${r.slug ?? r.id}`);
       } else {
         // Multiple restaurants: show selection UI
         setRestaurants(
@@ -326,7 +317,9 @@ export default function LoginForm({
                       ? window.location.pathname.split("/")
                       : ["", "en"];
                   const locale = parts[1] || r.defaultLocale || "en";
-                  router.push(`/${r.defaultLocale ?? locale}/${r.id}`);
+                  router.push(
+                    `/${r.defaultLocale ?? locale}/${r.slug ?? r.id}`
+                  );
                 }}
               >
                 {r.name}

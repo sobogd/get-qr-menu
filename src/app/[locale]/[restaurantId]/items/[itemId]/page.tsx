@@ -1,8 +1,5 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   Button,
   Dialog,
@@ -14,6 +11,9 @@ import {
   Input,
   Label,
 } from "@/components/ui";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 type Dish = {
   id: string;
@@ -124,7 +124,7 @@ export default function EditItemPage() {
           <DrawerTrigger asChild>
             <Button variant="outline">Options</Button>
           </DrawerTrigger>
-          <DrawerContent side="right" size="lg">
+          <DrawerContent>
             <div>Options editor placeholder</div>
           </DrawerContent>
         </Drawer>

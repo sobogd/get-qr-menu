@@ -126,5 +126,5 @@ export async function createDemoRestaurant(locale: string): Promise<string> {
       });
     })
   );
-  return restaurant.slug;
+  return restaurant.slug as string;
 }

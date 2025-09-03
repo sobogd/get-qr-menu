@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { COOKIE_SLUG } from "@/constants";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Props = {
   locale: string;
@@ -27,7 +26,6 @@ export default function StartCreateClient({ locale }: Props) {
         if (!mounted) return;
 
         if (res.ok && json?.slug) {
-          // Cookie is set by the route handler; redirect to the restaurant page
           window.location.href = `/${locale}/${json.slug}`;
         } else {
           console.error("create-demo failed", json);
@@ -60,7 +58,6 @@ export default function StartCreateClient({ locale }: Props) {
     );
   }
 
-  // Loader UI — matches existing loader look-and-feel
   return (
     <main className="min-h-dvh flex items-center justify-center p-4">
       <div className="w-full max-w-md border rounded bg-white">

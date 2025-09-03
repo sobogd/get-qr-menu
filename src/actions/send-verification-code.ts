@@ -1,8 +1,7 @@
-import { NextResponse } from "next/server";
+"use server";
+
 import { PrismaClient } from "@/generated/prisma";
 import { sendEmail } from "@/lib/brevo";
-
-export const runtime = "nodejs";
 
 const prisma = new PrismaClient();
 
@@ -12,32 +11,26 @@ function generateCode(length = 6) {
     .join("");
 }
 
-export async function POST(req: Request) {
+export async function sendVerificationCode(email: string) {
   try {
-    const body = await req.json().catch(() => ({}));
-    const email =
-      typeof body?.email === "string" ? body.email.trim().toLowerCase() : null;
-
-    if (!email) {
-      return NextResponse.json(
-        { ok: false, error: "Missing email" },
-        { status: 400 }
-      );
+    if (!email || typeof email !== "string") {
+      return { ok: false, error: "Missing email" };
     }
+
+    const normalized = email.trim().toLowerCase();
+    if (!normalized) return { ok: false, error: "Missing email" };
 
     const token = generateCode(6);
     const expiresAt = new Date(Date.now() + 1000 * 60 * 10); // 10 minutes
 
-    // Persist token
     await (prisma as any).verificationToken.create({
       data: {
-        email,
+        email: normalized,
         token,
         expiresAt,
       },
     });
 
-    // Send email via Brevo
     const subject = "Your verification code";
     const htmlContent = `<p>Your verification code for Get QR Menu is:</p>
       <h2 style="letter-spacing:4px">${token}</h2>
@@ -45,18 +38,17 @@ export async function POST(req: Request) {
 
     try {
       await sendEmail({
-        to: [{ email }],
+        to: [{ email: normalized }],
         subject,
         htmlContent,
       });
     } catch (err) {
       console.error("Brevo error:", err);
-      // Still return OK to avoid leaking whether email sending failed, but log server side.
     }
 
-    return NextResponse.json({ ok: true });
+    return { ok: true };
   } catch (e) {
-    console.error("send-code error", e);
-    return NextResponse.json({ ok: false, error: "FAILED" }, { status: 500 });
+    console.error("sendVerificationCode error", e);
+    return { ok: false, error: "FAILED" };
   }
 }
