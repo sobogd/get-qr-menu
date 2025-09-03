@@ -14,9 +14,9 @@ export async function PATCH(
   }
   const prisma = new PrismaClient();
   try {
-    const item = await prisma.gqm_item.findUnique({ where: { id: itemId } });
+    const item = await prisma.dish.findUnique({ where: { id: itemId } });
     if (!item) return NextResponse.json({ ok: false }, { status: 404 });
-    await prisma.gqm_item.update({
+    await prisma.dish.update({
       where: { id: itemId },
       data: { available },
     });

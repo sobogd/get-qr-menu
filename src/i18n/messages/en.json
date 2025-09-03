@@ -325,6 +325,16 @@
       "noResults": "No results"
     }
   },
+  "GetStarted": {
+    "title": "🍽️ Welcome to QR Menu",
+    "description": "Create a restaurant or log in to your account.",
+    "create": "Create restaurant",
+    "login": "Log in"
+  },
+  "CreateRestaurant": {
+    "title": "🍳 Creating a restaurant",
+    "status": "Almost ready — your restaurant is being set up…"
+  },
   "Dashboard": {
     "header": {
       "liveNote": "Your menu is live",
@@ -352,5 +362,18 @@
       "empty": "Empty",
       "demo": "Demo"
     }
+  },
+  "Auth": {
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "sendCode": "Send code",
+    "sending": "Sending...",
+    "codeHint": "Enter the 6-digit code sent to",
+    "back": "Back",
+    "verify": "Verify",
+    "verifying": "Verifying..."
+  },
+  "login": {
+    "title": "Sign in"
   }
 }

@@ -19,7 +19,7 @@ export async function PATCH(
   }
   const prisma = new PrismaClient();
   try {
-    const cats = await prisma.gqm_category.findMany({
+    const cats = await prisma.category.findMany({
       where: { restaurantId },
     });
     const catSet = new Set(cats.map((c) => c.id));
@@ -30,7 +30,7 @@ export async function PATCH(
       if (!Array.isArray(ids) || ids.length === 0) continue;
       for (const itemId of ids) {
         updates.push(
-          prisma.gqm_item.update({
+          prisma.dish.update({
             where: { id: itemId },
             data: {
               sortIndex: ids.indexOf(itemId) * 10,

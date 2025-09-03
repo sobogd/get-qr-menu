@@ -20,7 +20,7 @@ export async function PATCH(
       /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
         s
       );
-    const categories = await prisma.gqm_category.findMany({
+    const categories = await prisma.category.findMany({
       where: isUuid(restaurantId)
         ? { restaurantId }
         : { restaurant: { slug: restaurantId } },
@@ -29,7 +29,7 @@ export async function PATCH(
     const updates = categories
       .filter((c) => map.has(c.id))
       .map((c) =>
-        prisma.gqm_category.update({
+        prisma.category.update({
           where: { id: c.id },
           data: { sortIndex: map.get(c.id) },
         })

@@ -31,7 +31,7 @@ async function generateHumanSlug(): Promise<string> {
       .replace(/[^a-z0-9-]/g, "-");
     if (!slug) slug = `demo-${Math.random().toString(36).slice(2, 8)}`;
     // Проверить уникальность
-    const exists = await prisma.gqm_restaurant.findFirst({ where: { slug } });
+    const exists = await prisma.restaurant.findFirst({ where: { slug } });
     if (exists) slug += `-${Math.random().toString(36).slice(2, 4)}`;
     return slug;
   } catch {
@@ -84,7 +84,7 @@ export async function createDemoRestaurant(locale: string): Promise<string> {
   // Генерируем человекопонятный slug через OpenAI
   const slug = await generateHumanSlug();
   // Создание ресторана
-  const restaurant = await prisma.gqm_restaurant.create({
+  const restaurant = await prisma.restaurant.create({
     data: {
       ...DEMO_RESTAURANT,
       slug,
@@ -94,7 +94,7 @@ export async function createDemoRestaurant(locale: string): Promise<string> {
   // Категории
   const categories = await Promise.all(
     DEMO_CATEGORIES.map((cat) =>
-      prisma.gqm_category.create({
+      prisma.category.create({
         data: {
           ...cat,
           restaurantId: restaurant.id,
@@ -106,17 +106,22 @@ export async function createDemoRestaurant(locale: string): Promise<string> {
   await Promise.all(
     DEMO_ITEMS.map((item) => {
       const category = categories.find((c) => c.name === item.category);
-      return prisma.gqm_item.create({
+      const basePrice = (item.priceCents / 100).toFixed(2); // Decimal-compatible string
+
+      return prisma.dish.create({
         data: {
-          name: item.name,
-          description: item.description,
-          priceCents: item.priceCents,
-          currency: item.currency,
-          available: item.available,
-          sortIndex: item.sortIndex,
+          basePrice: basePrice,
+          photoUrl: undefined,
+          isAvailable: item.available,
           restaurantId: restaurant.id,
-          categoryId: category?.id,
-          isDemo: true,
+          categoryId: category?.id ?? undefined,
+          translations: {
+            create: {
+              lang: locale,
+              name: item.name,
+              description: item.description,
+            },
+          },
         },
       });
     })

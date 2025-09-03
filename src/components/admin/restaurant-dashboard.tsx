@@ -6,6 +6,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { DashboardHeader } from "./DashboardHeader";
+import ItemEditor from "./ItemEditor";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -52,6 +53,12 @@ export function RestaurantDashboard({
   const [dirty, setDirty] = useState(false);
   // sonner toast is used for notifications
   const persistingRef = useRef(false);
+
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [defaultCategoryId, setDefaultCategoryId] = useState<string | null>(
+    categories[0]?.id ?? null
+  );
 
   useEffect(() => {
     try {
@@ -194,6 +201,11 @@ export function RestaurantDashboard({
         firstCategoryId={categories[0]?.id}
         query={query}
         onQueryChange={setQuery}
+        onAddItem={() => {
+          setEditingItemId(null);
+          setDefaultCategoryId(categories[0]?.id ?? null);
+          setEditorOpen(true);
+        }}
       />
 
       {dirty && (
@@ -299,7 +311,14 @@ export function RestaurantDashboard({
                       />
                     </div>
                     <div className="flex gap-1">
-                      <Button className="w-8 h-8" variant="ghost">
+                      <Button
+                        className="w-8 h-8"
+                        variant="ghost"
+                        onClick={() => {
+                          setEditingItemId(i.id);
+                          setEditorOpen(true);
+                        }}
+                      >
                         <Pencil />
                       </Button>
                       <Button className="w-8 h-8" variant="ghost">
@@ -316,6 +335,15 @@ export function RestaurantDashboard({
           </div>
         ))}
       </div>
+
+      <ItemEditor
+        open={editorOpen}
+        onOpenChange={(open: boolean) => setEditorOpen(open)}
+        itemId={editingItemId}
+        locale={base}
+        restaurantId={restaurantId}
+        defaultCategoryId={defaultCategoryId}
+      />
 
       {/* sonner Toaster is mounted globally */}
     </div>

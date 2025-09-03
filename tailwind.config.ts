@@ -1,14 +1,26 @@
 import type { Config } from "tailwindcss";
-import animate from "tailwindcss-animate";
 
-export default {
+const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        indeterminate: {
+          "0%": { left: "-30%" },
+          "50%": { left: "50%" },
+          "100%": { left: "110%" },
+        },
+      },
+      animation: {
+        indeterminate: "indeterminate 2s ease-in-out infinite",
+      },
+    },
   },
-  plugins: [animate],
-} satisfies Config;
+  plugins: [],
+};
+
+export default config;

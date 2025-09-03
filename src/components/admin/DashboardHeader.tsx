@@ -14,6 +14,7 @@ interface DashboardHeaderProps {
   firstCategoryId?: string;
   query: string;
   onQueryChange: (value: string) => void;
+  onAddItem?: () => void;
 }
 
 export function DashboardHeader({
@@ -22,6 +23,7 @@ export function DashboardHeader({
   firstCategoryId,
   query,
   onQueryChange,
+  onAddItem,
 }: DashboardHeaderProps) {
   const t = useTranslations("Dashboard.header");
   // copy feedback state intentionally omitted (not used)
@@ -126,21 +128,35 @@ export function DashboardHeader({
                   <span className="text-xs sm:text-sm">Add Category</span>
                 </Button>
               </Link>
-              <Link
-                href={`/${base}/${restaurantId}/items/new${
-                  firstCategoryId ? `?category=${firstCategoryId}` : ""
-                }`}
-                className="flex-1"
-              >
-                <Button
-                  size="sm"
-                  variant="default"
-                  className="w-full flex-1 px-3 py-2 text-sm"
+              {onAddItem ? (
+                <div className="flex-1">
+                  <Button
+                    size="sm"
+                    variant="default"
+                    onClick={onAddItem}
+                    className="w-full flex-1 px-3 py-2 text-sm"
+                  >
+                    <Plus className="mr-0.5 h-4 w-4" />
+                    <span className="text-xs sm:text-sm">Add Item</span>
+                  </Button>
+                </div>
+              ) : (
+                <Link
+                  href={`/${base}/${restaurantId}/items/new${
+                    firstCategoryId ? `?category=${firstCategoryId}` : ""
+                  }`}
+                  className="flex-1"
                 >
-                  <Plus className="mr-0.5 h-4 w-4" />
-                  <span className="text-xs sm:text-sm">Add Item</span>
-                </Button>
-              </Link>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="w-full flex-1 px-3 py-2 text-sm"
+                  >
+                    <Plus className="mr-0.5 h-4 w-4" />
+                    <span className="text-xs sm:text-sm">Add Item</span>
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
